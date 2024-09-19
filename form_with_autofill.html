@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Biodata Lengkap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .gender-label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Formulir Biodata Lengkap</h2>
+        <form action="/submit" method="POST">
+            <!-- Nama -->
+            <label for="name">Nama:</label>
+            <input type="text" id="name" name="name" value="" required>
+
+            <!-- Email -->
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="" required>
+
+            <!-- Nomor Telepon -->
+            <label for="phone">Nomor Telepon:</label>
+            <input type="tel" id="phone" name="phone" value="" required>
+
+            <!-- Alamat -->
+            <label for="address">Alamat:</label>
+            <textarea id="address" name="address" rows="4" cols="50" required></textarea>
+
+            <!-- Jenis Kelamin -->
+            <label for="gender">Jenis Kelamin:</label>
+            <div>
+                <input type="radio" id="male" name="gender" value="Laki-laki">
+                <label class="gender-label" for="male">Laki-laki</label>
+                <input type="radio" id="female" name="gender" value="Perempuan">
+                <label class="gender-label" for="female">Perempuan</label>
+            </div>
+
+            <!-- Pekerjaan -->
+            <label for="job">Pekerjaan:</label>
+            <select id="job" name="job" required>
+                <option value="Pelajar">Pelajar</option>
+                <option value="Mahasiswa">Mahasiswa</option>
+                <option value="Karyawan">Karyawan</option>
+                <option value="Wirausaha">Wirausaha</option>
+            </select>
+
+            <!-- Tanggal Lahir -->
+            <label for="birthdate">Tanggal Lahir:</label>
+            <input type="date" id="birthdate" name="birthdate" value="">
+
+            <!-- Pendidikan -->
+            <label for="education">Pendidikan:</label>
+            <input type="text" id="education" name="education" value="">
+
+            <!-- Status Pernikahan -->
+            <label for="marital_status">Status Pernikahan:</label>
+            <input type="text" id="marital_status" name="marital_status" value="">
+
+            <!-- Hobi -->
+            <label for="hobbies">Hobi:</label>
+            <input type="text" id="hobbies" name="hobbies" value="">
+
+            <input type="submit" value="Submit" class="submit-btn">
+        </form>
+    </div>
+
+    <script>
+        // Data dari server (Flask)
+        const formData = {{ data | tojson | safe }};
+        console.log("Data dari Flask:", formData);  // Debugging: Tampilkan data di console
+
+        // Fungsi untuk mengisi form secara bertahap
+        function fillForm() {
+            setTimeout(() => { document.getElementById('name').value = formData['Nama']; }, 500);
+            setTimeout(() => { document.getElementById('email').value = formData['Email']; }, 1000);
+            setTimeout(() => { document.getElementById('phone').value = formData['Nomor Telepon']; }, 1500);
+            setTimeout(() => { document.getElementById('address').value = formData['Alamat']; }, 2000);
+
+            setTimeout(() => {
+                if (formData['Jenis Kelamin'] === 'Laki-laki') {
+                    document.getElementById('male').checked = true;
+                } else if (formData['Jenis Kelamin'] === 'Perempuan') {
+                    document.getElementById('female').checked = true;
+                }
+            }, 2500);
+
+            setTimeout(() => { document.getElementById('job').value = formData['Pekerjaan']; }, 3000);
+            setTimeout(() => { document.getElementById('birthdate').value = formData['Tanggal Lahir']; }, 3500);
+            setTimeout(() => { document.getElementById('education').value = formData['Pendidikan']; }, 4000);
+            setTimeout(() => { document.getElementById('marital_status').value = formData['Status Pernikahan']; }, 4500);
+            setTimeout(() => { document.getElementById('hobbies').value = formData['Hobi']; }, 5000);
+        }
+
+        // Panggil fungsi untuk mengisi form setelah halaman selesai dimuat
+        window.onload = fillForm;
+    </script>
+</body>
+</html>
